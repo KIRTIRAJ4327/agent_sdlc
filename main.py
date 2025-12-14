@@ -1,6 +1,7 @@
 """LangGraph workflow for ReqGuard prototype."""
 
 import os
+import streamlit as st
 from typing import TypedDict, Annotated
 from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.memory import MemorySaver
@@ -17,6 +18,16 @@ from agents import (
 
 load_dotenv()
 
+# Helper to get API key from env or streamlit secrets
+def get_api_key():
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        try:
+            api_key = st.secrets["GOOGLE_API_KEY"]
+        except Exception:
+            pass
+    return api_key
+
 # State definition
 class ReqGuardState(TypedDict):
     raw_requirements: str
@@ -30,10 +41,11 @@ class ReqGuardState(TypedDict):
     approved: bool
 
 # Initialize LLM
+# Fallback to a safe model name if 2.5 isn't available
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
+    model="gemini-1.5-flash", 
     temperature=0,
-    google_api_key=os.getenv("GOOGLE_API_KEY")
+    google_api_key=get_api_key()
 )
 author = ReqGuardAuthor(llm)
 critic = ReqGuardCritic(llm)
