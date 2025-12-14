@@ -42,7 +42,7 @@ class ReqGuardState(TypedDict):
 
 # Initialize LLM
 llm = ChatGoogleGenerativeAI(
-    model="gemini-1.5-pro", 
+    model="gemini-2.5-flash",
     temperature=0,
     google_api_key=get_api_key()
 )
