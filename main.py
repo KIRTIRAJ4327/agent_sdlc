@@ -41,10 +41,8 @@ class ReqGuardState(TypedDict):
     approved: bool
 
 # Initialize LLM
-# Switch to 'gemini-pro' which is the stable model name for Gemini 1.0 Pro
-# If you have access to 1.5, try 'gemini-1.5-pro' or 'gemini-1.5-flash' but 'gemini-pro' is safest.
 llm = ChatGoogleGenerativeAI(
-    model="gemini-pro", 
+    model="gemini-1.5-pro", 
     temperature=0,
     google_api_key=get_api_key()
 )
